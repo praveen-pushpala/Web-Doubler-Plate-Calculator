@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doubler Plate Width Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .result-card {
+            transition: all 0.3s ease-in-out;
+        }
+        #result.error {
+            border-color: #f87171; /* red-400 */
+            background-color: #fef2f2; /* red-50 */
+        }
+        #result.success {
+            border-color: #34d399; /* green-400 */
+            background-color: #f0fdf4; /* green-50 */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-lg mx-auto">
+        <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+            <div class="p-6 md:p-8">
+                <div class="text-center">
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Doubler Plate Calculator</h1>
+                    <p class="text-gray-500 mt-2">Instantly calculate doubler plate width based on AISC shapes.</p>
+                </div>
+
+                <div class="mt-8">
+                    <label for="beamSize" class="block text-sm font-medium text-gray-700 mb-2">Beam Size</label>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <input type="text" id="beamSize" name="beamSize" placeholder="e.g., W44x335 or w44*335" class="flex-grow w-full px-4 py-3 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" autocomplete="off">
+                        <button id="calculateBtn" class="w-full sm:w-auto bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out shadow-sm">
+                            Calculate
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="resultContainer" class="px-6 md:px-8 pb-8 hidden">
+                 <div id="result" class="result-card p-6 rounded-xl border-2">
+                    <!-- Results will be injected here -->
+                </div>
+            </div>
+        </div>
+        <footer class="text-center mt-6 text-sm text-gray-400">
+            <p>Powered by AISC Shapes v15.0 Data</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- DATA STORE ---
+        // A subset of the AISC Shapes v15.0 CSV data is embedded here for performance and reliability.
+        const aiscData = [
+            // Headers: AISC_Manual_Label,d,tf,Kdes
+            { AISC_Manual_Label: "W44X335", d: 44.0, tf: 1.77, Kdes: 2.56 },
+            { AISC_Manual_Label: "W44X290", d: 43.6, tf: 1.58, Kdes: 2.36 },
+            { AISC_Manual_Label: "W44X262", d: 43.3, tf: 1.42, Kdes: 2.2 },
+            { AISC_Manual_Label: "W44X230", d: 42.9, tf: 1.22, Kdes: 2.01 },
+            { AISC_Manual_Label: "W40X655", d: 43.6, tf: 3.54, Kdes: 4.72 },
+            { AISC_Manual_Label: "W40X593", d: 43.0, tf: 3.23, Kdes: 4.41 },
+            { AISC_Manual_Label: "W40X503", d: 42.1, tf: 2.76, Kdes: 3.94 },
+            { AISC_Manual_Label: "W40X431", d: 41.3, tf: 2.36, Kdes: 3.54 },
+            { AISC_Manual_Label: "W40X397", d: 41.0, tf: 2.2, Kdes: 3.38 },
+            { AISC_Manual_Label: "W40X372", d: 40.6, tf: 2.05, Kdes: 3.23 },
+            { AISC_Manual_Label: "W40X362", d: 40.6, tf: 2.01, Kdes: 3.19 },
+            { AISC_Manual_Label: "W40X324", d: 40.2, tf: 1.81, Kdes: 2.99 },
+            { AISC_Manual_Label: "W40X297", d: 39.8, tf: 1.65, Kdes: 2.83 },
+            { AISC_Manual_Label: "W40X277", d: 39.7, tf: 1.58, Kdes: 2.76 },
+            { AISC_Manual_Label: "W40X249", d: 39.4, tf: 1.42, Kdes: 2.6 },
+            { AISC_Manual_Label: "W40X215", d: 39.0, tf: 1.22, Kdes: 2.4 },
+            { AISC_Manual_Label: "W40X199", d: 38.7, tf: 1.07, Kdes: 2.25 },
+            { AISC_Manual_Label: "W40X392", d: 41.6, tf: 2.52, Kdes: 3.7 },
+            { AISC_Manual_Label: "W40X331", d: 40.8, tf: 2.13, Kdes: 3.31 },
+            { AISC_Manual_Label: "W40X327", d: 40.8, tf: 2.13, Kdes: 3.31 },
+            { AISC_Manual_Label: "W40X294", d: 40.4, tf: 1.93, Kdes: 3.11 },
+            { AISC_Manual_Label: "W40X278", d: 40.2, tf: 1.81, Kdes: 2.99 },
+            { AISC_Manual_Label: "W40X264", d: 40.0, tf: 1.73, Kdes: 2.91 },
+            { AISC_Manual_Label: "W40X235", d: 39.7, tf: 1.58, Kdes: 2.76 },
+            { AISC_Manual_Label: "W40X211", d: 39.4, tf: 1.42, Kdes: 2.6 },
+            { AISC_Manual_Label: "W40X183", d: 39.0, tf: 1.2, Kdes: 2.38 },
+            { AISC_Manual_Label: "W40X167", d: 38.6, tf: 1.03, Kdes: 2.21 },
+            { AISC_Manual_Label: "W40X149", d: 38.2, tf: 0.83, Kdes: 2.01 },
+            { AISC_Manual_Label: "W36X302", d: 37.3, tf: 1.68, Kdes: 2.63 },
+            { AISC_Manual_Label: "W33X130", d: 33.1, tf: 0.855, Kdes: 1.56 },
+            { AISC_Manual_Label: "W30X99", d: 29.7, tf: 0.67, Kdes: 1.32 },
+            { AISC_Manual_Label: "W21X62", d: 21.0, tf: 0.615, Kdes: 1.12 },
+            { AISC_Manual_Label: "W12X58", d: 12.2, tf: 0.64, Kdes: 1.24 },
+            { AISC_Manual_Label: "W10X49", d: 10.0, tf: 0.56, Kdes: 1.06 },
+            { AISC_Manual_Label: "W8X31", d: 8.0, tf: 0.435, Kdes: 0.829 },
+            { AISC_Manual_Label: "W6X25", d: 6.38, tf: 0.455, Kdes: 0.705 },
+            { AISC_Manual_Label: "W4X13", d: 4.16, tf: 0.345, Kdes: 0.595 },
+        ];
+
+        // --- ELEMENTS ---
+        const calculateBtn = document.getElementById('calculateBtn');
+        const beamSizeInput = document.getElementById('beamSize');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultDiv = document.getElementById('result');
+
+        // --- FUNCTIONS ---
+
+        /**
+         * Normalizes various beam size input formats into a standard one.
+         * e.g., "w44*335" -> "W44X335"
+         * @param {string} input - The user's input string.
+         * @returns {string|null} The normalized string or null if invalid.
+         */
+        function normalizeBeamLabel(input) {
+            if (!input) return null;
+            // Convert to uppercase and replace common separators with 'X'
+            const cleaned = input.toUpperCase().replace(/[*x\s]/g, 'X');
+            // Use a regex to match the expected format (e.g., W##X###)
+            const match = cleaned.match(/^(W|HP|M|S)(\d+(\.\d+)?)X(\d+(\.\d+)?)$/);
+            return match ? match[0] : null;
+        }
+
+        /**
+         * Finds the beam data from our embedded AISC data store.
+         * @param {string} label - The normalized beam label.
+         * @returns {object|null} The beam data object or null if not found.
+         */
+        function findBeamData(label) {
+            return aiscData.find(beam => beam.AISC_Manual_Label === label) || null;
+        }
+
+        /**
+         * Calculates the encroachment value based on the difference between Kdes and tf.
+         * @param {number} kdes_tf_diff - The difference (Kdes - tf).
+         * @returns {number|null} The encroachment value in inches or null if out of range.
+         */
+        function getEncroachment(kdes_tf_diff) {
+            if (kdes_tf_diff <= 0.3125) return 0.125; // 1/8"
+            if (kdes_tf_diff > 0.3125 && kdes_tf_diff <= 0.5) return 0.1875; // 3/16"
+            if (kdes_tf_diff > 0.5 && kdes_tf_diff <= 0.8125) return 0.25; // 1/4"
+            if (kdes_tf_diff > 0.8125 && kdes_tf_diff <= 1.25) return 0.3125; // 5/16"
+            if (kdes_tf_diff > 1.25 && kdes_tf_diff <= 1.625) return 0.375; // 3/8"
+            return null; // Value is out of the defined range
+        }
+
+        /**
+         * Displays the final result or an error message in the UI.
+         * @param {string} htmlContent - The HTML content to display.
+         * @param {boolean} isError - True if the message is an error.
+         */
+        function displayResult(htmlContent, isError = false) {
+            resultDiv.innerHTML = htmlContent;
+            resultDiv.className = 'result-card p-6 rounded-xl border-2 ' + (isError ? 'error' : 'success');
+            resultContainer.classList.remove('hidden');
+        }
+
+        /**
+         * Main calculation logic.
+         */
+        function calculateWidth() {
+            const userInput = beamSizeInput.value;
+            const normalizedLabel = normalizeBeamLabel(userInput);
+
+            if (!normalizedLabel) {
+                displayResult(`<h3 class="font-semibold text-red-800">Invalid Format</h3><p class="text-red-600 mt-1">Please enter a valid beam size, like "W44X335".</p>`, true);
+                return;
+            }
+
+            const beam = findBeamData(normalizedLabel);
+
+            if (!beam) {
+                displayResult(`<h3 class="font-semibold text-red-800">Beam Not Found</h3><p class="text-red-600 mt-1">The beam size "${normalizedLabel}" was not found in our database.</p>`, true);
+                return;
+            }
+
+            const { d, tf, Kdes } = beam;
+            const kdes_tf_diff = Kdes - tf;
+            const encr = getEncroachment(kdes_tf_diff);
+
+            if (encr === null) {
+                displayResult(`<h3 class="font-semibold text-red-800">Calculation Error</h3><p class="text-red-600 mt-1">The value of Kdes-tf (${kdes_tf_diff.toFixed(3)}") is outside the defined range.</p>`, true);
+                return;
+            }
+
+            const widthInches = d - (2 * Kdes) + (2 * encr);
+            const widthMM = widthInches * 25.4;
+
+            const resultHTML = `
+                <div class="text-center">
+                    <p class="text-sm font-medium text-gray-500">Calculated Doubler Plate Width</p>
+                    <p class="text-4xl font-bold text-gray-800 mt-2">${widthMM.toFixed(3)} mm</p>
+                    <p class="text-lg text-gray-600 mt-1">${widthInches.toFixed(3)} inches</p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gray-200 text-sm text-gray-600 space-y-2">
+                    <div class="flex justify-between"><span class="font-medium">Beam:</span><span>${normalizedLabel}</span></div>
+                    <div class="flex justify-between"><span class="font-medium">d:</span><span>${d.toFixed(2)}"</span></div>
+                    <div class="flex justify-between"><span class="font-medium">Kdes:</span><span>${Kdes.toFixed(2)}"</span></div>
+                    <div class="flex justify-between"><span class="font-medium">tf:</span><span>${tf.toFixed(2)}"</span></div>
+                    <div class="flex justify-between"><span class="font-medium">Encr:</span><span>${encr.toFixed(4)}"</span></div>
+                </div>
+            `;
+            
+            displayResult(resultHTML, false);
+        }
+
+        // --- EVENT LISTENERS ---
+        calculateBtn.addEventListener('click', calculateWidth);
+        
+        // Allow calculation on pressing Enter key
+        beamSizeInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                calculateWidth();
+            }
+        });
+
+    </script>
+</body>
+</html>
