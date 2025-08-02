@@ -11,8 +11,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* slate-50 */
-            background-image: url('https://www.transparenttextures.com/patterns/concrete-wall.png');
+            background-color: #f1f5f9; /* slate-100 */
         }
         .card-shadow {
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -23,7 +22,7 @@
         }
         #result.error {
             border-color: #fca5a5; /* red-300 */
-            background-color: #fff1f2; /* red-50 */
+            background-color: #fef2f2; /* red-50 */
         }
         #result.success {
             border-color: #6ee7b7; /* emerald-300 */
@@ -37,11 +36,11 @@
 <body class="flex items-center justify-center min-h-screen p-4">
     <!-- Watermark Logo -->
     <div class="absolute top-5 left-5">
-        <img src="https://www.canam.com/wp-content/uploads/2019/07/logo-canam-hp.png" alt="CANAM Logo" class="h-8 opacity-40" onerror="this.style.display='none'">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAABCAYAAAAy+DbLAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAfGSURBVHhe7Z1/aBxlHMe/s04EsdIdhG5diqR0l2Cn4qZgVx0MhG7VpZAKbS+Fdhb8wYcOOhQcOhScOqjowcGtQx0KOtRBp3YVFDvYQdEOdhb8gw4dCg4dCg7tKHDg4MA/OP/3/v3k3U2SJMn7vU8+3+8PkiS5e9/73rzJ2/fevMmbBwABAAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAEgAQABIAEAASABAAGg/wL45ptv8NNPP+HZZ5/l+eef59VXX+Xll1/m9ddf57nnnrv9z3fffZfnnnuOV155hVdeeYVnn32W55577vY/AASABIAEAASA5gTQ3d3NXXfdxY033siTTz7JTTfdxBNPPMEvv/zC448/zuuvv85LL73Eyy+/zB//+MfcfvvtXH/99dxwww2cffbZ/OIXv+DTTz/l+eef5/rrr+f666/n+uuv54YbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXXdx0003cMMNNwAgACQAIACk/wH88pe/5LbbbuOuu+7ihhtu4K677uKGG27grrvu4oYbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXXdx0003cMMNNwAgACQAIACk/wH88pe/5LbbbuOuu+7ihhtu4K677uKGG27grrvu4oYbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXXdx0003cMMNNwAgACQAIACk/wH88pe/5LbbbuOuu+7ihhtu4K677uKGG27grrvu4oYbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXXdx0003cMMNNwAgACQAIACk/wH88pe/5LbbbuOuu+7ihhtu4K677uKGG27grrvu4oYbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXXdx0003cMMNNwAgACQAIACk/wH88pe/5LbbbuOuu+7ihhtu4K677uKGG27grrvu4oYbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXXdx0003cMMNNwAgACQAIACk/wH88pe/5LbbbuOuu+7ihhtu4K677uKGG27grrvu4oYbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXXdx0003cMMNNwAgACQAIACk/wH88pe/5LbbbuOuu+7ihhtu4K677uKGG27grrvu4oYbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXXdx0003cMMNNwAgACQAIACk/wH88pe/5LbbbuOuu+7ihhtu4K677uKGG27grrvu4oYbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXXdx0003cMMNNwAgACQAIACk/wH88pe/5LbbbuOuu+7ihhtu4K677uKGG27grrvu4oYbbgBAAEgAQABIAEAeAQRQW1tb+f7773nppZf4y1/+wq233sqNN97IjTfeyL333sv999/P7bffzhtvvMHf/vY3/vCHP3DjjTdyxx13cNNNN3HXXXdx0003ceONN3LXXXdx8803c8MNNwAgACQAIACk/wH0d3fz+uuvc8MNN3DXXXdx0003ceONN3LXXXdx8803c9ddd3HXXXdxww03cMcdd3DjjTdyxx13cMMNN3DXXX" alt="CANAM Logo" class="h-8 opacity-70">
     </div>
 
     <div class="w-full max-w-lg mx-auto">
-        <div class="bg-white/95 backdrop-blur-sm rounded-2xl card-shadow overflow-hidden border border-gray-200/50">
+        <div class="bg-white rounded-2xl card-shadow overflow-hidden border border-gray-200/80">
             <div class="p-6 md:p-8">
                 <div class="text-center">
                     <div class="flex items-center justify-center gap-3">
@@ -427,14 +426,14 @@
             const normalizedLabel = normalizeBeamLabel(userInput);
 
             if (!normalizedLabel) {
-                displayResult(`<h3 class="font-semibold text-red-800">Invalid Format</h3><p class="text-red-600 mt-1">Please enter a valid beam size, like "W44X335".</p>`, true);
+                displayResult(`<h3 class="font-semibold text-red-400">Invalid Format</h3><p class="text-red-500 mt-1">Please enter a valid beam size, like "W44X335".</p>`, true);
                 return;
             }
 
             const beam = findBeamData(normalizedLabel);
 
             if (!beam) {
-                displayResult(`<h3 class="font-semibold text-red-800">Beam Not Found</h3><p class="text-red-600 mt-1">The beam size "${normalizedLabel}" was not found in our database.</p>`, true);
+                displayResult(`<h3 class="font-semibold text-red-400">Beam Not Found</h3><p class="text-red-500 mt-1">The beam size "${normalizedLabel}" was not found in our database.</p>`, true);
                 return;
             }
 
@@ -443,7 +442,7 @@
             const encr = getEncroachment(kdes_tf_diff);
 
             if (encr === null) {
-                displayResult(`<h3 class="font-semibold text-red-800">Calculation Error</h3><p class="text-red-600 mt-1">The value of Kdes-tf (${kdes_tf_diff.toFixed(3)}") is outside the defined range.</p>`, true);
+                displayResult(`<h3 class="font-semibold text-red-400">Calculation Error</h3><p class="text-red-500 mt-1">The value of Kdes-tf (${kdes_tf_diff.toFixed(3)}") is outside the defined range.</p>`, true);
                 return;
             }
 
@@ -452,16 +451,16 @@
 
             const resultHTML = `
                 <div class="text-center">
-                    <p class="text-sm font-medium text-gray-500">Calculated Doubler Plate Width</p>
-                    <p class="text-4xl font-bold text-gray-800 mt-2">${widthMM.toFixed(3)} mm</p>
-                    <p class="text-lg text-gray-600 mt-1">${widthInches.toFixed(3)} inches</p>
+                    <p class="text-sm font-medium text-slate-400">Calculated Doubler Plate Width</p>
+                    <p class="text-4xl font-bold text-slate-100 mt-2">${widthMM.toFixed(3)} mm</p>
+                    <p class="text-lg text-slate-300 mt-1">${widthInches.toFixed(3)} inches</p>
                 </div>
-                <div class="mt-6 pt-4 border-t border-gray-200/80 text-sm text-gray-600 space-y-2">
-                    <div class="flex justify-between"><span class="font-medium text-gray-500">Beam:</span><span class="font-semibold">${normalizedLabel}</span></div>
-                    <div class="flex justify-between"><span class="font-medium text-gray-500">d:</span><span class="font-semibold">${d.toFixed(2)}"</span></div>
-                    <div class="flex justify-between"><span class="font-medium text-gray-500">Kdes:</span><span class="font-semibold">${Kdes.toFixed(2)}"</span></div>
-                    <div class="flex justify-between"><span class="font-medium text-gray-500">tf:</span><span class="font-semibold">${tf.toFixed(2)}"</span></div>
-                    <div class="flex justify-between"><span class="font-medium text-gray-500">Encr:</span><span class="font-semibold">${encr.toFixed(4)}"</span></div>
+                <div class="mt-6 pt-4 border-t border-slate-600/80 text-sm text-slate-300 space-y-2">
+                    <div class="flex justify-between"><span class="font-medium text-slate-400">Beam:</span><span class="font-semibold text-slate-200">${normalizedLabel}</span></div>
+                    <div class="flex justify-between"><span class="font-medium text-slate-400">d:</span><span class="font-semibold text-slate-200">${d.toFixed(2)}"</span></div>
+                    <div class="flex justify-between"><span class="font-medium text-slate-400">Kdes:</span><span class="font-semibold text-slate-200">${Kdes.toFixed(2)}"</span></div>
+                    <div class="flex justify-between"><span class="font-medium text-slate-400">tf:</span><span class="font-semibold text-slate-200">${tf.toFixed(2)}"</span></div>
+                    <div class="flex justify-between"><span class="font-medium text-slate-400">Encr:</span><span class="font-semibold text-slate-200">${encr.toFixed(4)}"</span></div>
                 </div>
             `;
             
