@@ -5,41 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doubler Plate Width Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            background-image: url('https://www.transparenttextures.com/patterns/concrete-wall.png');
         }
         .card-shadow {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
         .result-card {
             transition: all 0.3s ease-in-out;
+            border-width: 1px;
         }
         #result.error {
-            border-color: #f87171; /* red-400 */
-            background-color: #fef2f2; /* red-50 */
+            border-color: #fca5a5; /* red-300 */
+            background-color: #fff1f2; /* red-50 */
         }
         #result.success {
-            border-color: #34d399; /* green-400 */
-            background-color: #f0fdf4; /* green-50 */
+            border-color: #6ee7b7; /* emerald-300 */
+            background-color: #ecfdf5; /* emerald-50 */
+        }
+        .font-jakarta {
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
     </style>
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
+<body class="flex items-center justify-center min-h-screen p-4">
+    <!-- Watermark Logo -->
+    <div class="absolute top-5 left-5">
+        <img src="https://www.canam.com/wp-content/uploads/2019/07/logo-canam-hp.png" alt="CANAM Logo" class="h-8 opacity-40" onerror="this.style.display='none'">
+    </div>
+
     <div class="w-full max-w-lg mx-auto">
-        <div class="bg-white rounded-2xl card-shadow overflow-hidden">
+        <div class="bg-white/95 backdrop-blur-sm rounded-2xl card-shadow overflow-hidden border border-gray-200/50">
             <div class="p-6 md:p-8">
                 <div class="text-center">
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Doubler Plate Calculator</h1>
+                    <div class="flex items-center justify-center gap-3">
+                        <!-- Icon for visual flair -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><path d="M12 15l-5-5h10l-5 5z"/><path d="M2 12h20"/><path d="M2 6h20"/><path d="M2 18h20"/></svg>
+                        <h1 class="text-2xl md:text-3xl font-jakarta font-extrabold text-gray-800">Doubler Plate Calculator</h1>
+                    </div>
                     <p class="text-gray-500 mt-2">Instantly calculate doubler plate width based on AISC shapes.</p>
                 </div>
 
                 <div class="mt-8">
                     <label for="beamSize" class="block text-sm font-medium text-gray-700 mb-2">Beam Size</label>
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <input type="text" id="beamSize" name="beamSize" placeholder="e.g., W44x335 or w44*335" class="flex-grow w-full px-4 py-3 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" autocomplete="off">
-                        <button id="calculateBtn" class="w-full sm:w-auto bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out shadow-sm">
+                        <input type="text" id="beamSize" name="beamSize" placeholder="e.g., W44x335 or w44*335" class="flex-grow w-full px-4 py-3 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out" autocomplete="off">
+                        <button id="calculateBtn" class="w-full sm:w-auto bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out shadow-sm hover:shadow-md">
                             Calculate
                         </button>
                     </div>
@@ -47,19 +64,18 @@
             </div>
 
             <div id="resultContainer" class="px-6 md:px-8 pb-8 hidden">
-                 <div id="result" class="result-card p-6 rounded-xl border-2">
+                 <div id="result" class="result-card p-6 rounded-xl">
                     <!-- Results will be injected here -->
                 </div>
             </div>
         </div>
-        <footer class="text-center mt-6 text-sm text-gray-400">
+        <footer class="text-center mt-6 text-sm text-gray-500">
             <p>Powered by AISC Shapes v15.0 Data</p>
         </footer>
     </div>
 
     <script>
         // --- DATA STORE ---
-        // A subset of the AISC Shapes v15.0 CSV data is embedded here for performance and reliability.
         const aiscData = [
             { AISC_Manual_Label: "W44X335", d: 44.0, tf: 1.77, Kdes: 2.56 },
             { AISC_Manual_Label: "W44X290", d: 43.6, tf: 1.58, Kdes: 2.36 },
@@ -399,7 +415,7 @@
          */
         function displayResult(htmlContent, isError = false) {
             resultDiv.innerHTML = htmlContent;
-            resultDiv.className = 'result-card p-6 rounded-xl border-2 ' + (isError ? 'error' : 'success');
+            resultDiv.className = 'result-card p-6 rounded-xl ' + (isError ? 'error' : 'success');
             resultContainer.classList.remove('hidden');
         }
 
@@ -440,12 +456,12 @@
                     <p class="text-4xl font-bold text-gray-800 mt-2">${widthMM.toFixed(3)} mm</p>
                     <p class="text-lg text-gray-600 mt-1">${widthInches.toFixed(3)} inches</p>
                 </div>
-                <div class="mt-6 pt-4 border-t border-gray-200 text-sm text-gray-600 space-y-2">
-                    <div class="flex justify-between"><span class="font-medium">Beam:</span><span>${normalizedLabel}</span></div>
-                    <div class="flex justify-between"><span class="font-medium">d:</span><span>${d.toFixed(2)}"</span></div>
-                    <div class="flex justify-between"><span class="font-medium">Kdes:</span><span>${Kdes.toFixed(2)}"</span></div>
-                    <div class="flex justify-between"><span class="font-medium">tf:</span><span>${tf.toFixed(2)}"</span></div>
-                    <div class="flex justify-between"><span class="font-medium">Encr:</span><span>${encr.toFixed(4)}"</span></div>
+                <div class="mt-6 pt-4 border-t border-gray-200/80 text-sm text-gray-600 space-y-2">
+                    <div class="flex justify-between"><span class="font-medium text-gray-500">Beam:</span><span class="font-semibold">${normalizedLabel}</span></div>
+                    <div class="flex justify-between"><span class="font-medium text-gray-500">d:</span><span class="font-semibold">${d.toFixed(2)}"</span></div>
+                    <div class="flex justify-between"><span class="font-medium text-gray-500">Kdes:</span><span class="font-semibold">${Kdes.toFixed(2)}"</span></div>
+                    <div class="flex justify-between"><span class="font-medium text-gray-500">tf:</span><span class="font-semibold">${tf.toFixed(2)}"</span></div>
+                    <div class="flex justify-between"><span class="font-medium text-gray-500">Encr:</span><span class="font-semibold">${encr.toFixed(4)}"</span></div>
                 </div>
             `;
             
